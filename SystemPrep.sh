@@ -73,7 +73,7 @@ function encryptdisk
         mkfs.fat -F32 $EFIPRT
         mkdir /mnt/efi
         mount $EFIPRT /mnt/efi
-        pacstrap /mnt base linux linux-firmware mkinitcpio lvm2 vi dhcpcd wpa_supplicant nano iwd grub efibootmgr intel-ucode dhcpcd base-devel
+        pacstrap /mnt base linux linux-firmware mkinitcpio lvm2 vi dhcpcd wpa_supplicant nano iwd grub efibootmgr intel-ucode dhcpcd base-devel bash-completion
         genfstab -U /mnt >> /mnt/etc/fstab
         echo "chroot to your new installation!"
     else
