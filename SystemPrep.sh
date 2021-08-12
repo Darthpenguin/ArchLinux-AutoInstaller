@@ -25,7 +25,6 @@ function gettarget
     if [ -e $TESTFILE ]; then 
         clear
         TARGET="/dev/$TARGET"
-        clear
         partitiondisk
     else
         echo "Target does not exist. Try again or press [ctrl]+[C] to terminate"
@@ -43,8 +42,45 @@ function partitiondisk
     sgdisk -p $TARGET
     partprobe $TARGET
     fdisk -l $TARGET
+    read -p "Partitioning complete. Press [Enter] to continue to next stage."
+    encryptdisk
+}
+function encryptdisk
+{
+    if [ "$TARGET" == "/dev/sda" ]; then 
+        LUKSPART="/dev/sda3"
+        EFIPRT="/dev/sda2"
+    fi
+    if [ "$TARGET" == "/dev/nvme0n1" ]; then 
+        LUKSPART="/dev/nvme0n1p3"
+        EFIPRT="/dev/nvme0n1p2"
+    fi
+    if [ -e $LUKSPRT ]; then 
+        cryptsetup luksFormat --type luks1 --use-random -S 1 -s 512 -h sha512 -i 5000 $LUKSPRT
+        cryptsetup open $LUKSPRT cryptlvm
+        pvcreate /dev/mapper/cryptlvm
+        vgcreate vg /dev/mapper/cryptlvm
+        lvcreate -L 16G vg -n swap
+        lvcreate -L 32G vg -n root
+        lvcreate -l 100%FREE vg -n home
+        mkfs.ext4 /dev/vg/root
+        mkfs.ext4 /dev/vg/home
+        mkswap /dev/vg/swap
+        mount /dev/vg/root /mnt
+        mkdir /mnt/home
+        mount /dev/vg/home /mnt/home
+        swapon /dev/vg/swap
+        mkfs.fat -F32 $EFIPRT
+        mkdir /mnt/efi
+        mount $EFIPRT /mnt/efi
+        pacstrap /mnt base linux linux-firmware mkinitcpio lvm2 vi dhcpcd wpa_supplicant nano iwd grub efibootmgr intel-ucode dhcpcd base-devel
+        genfstab -U /mnt >> /mnt/etc/fstab
+        echo "chroot to your new installation!"
+    else
+        echo "MISSING LUKS PARTITION!"
+        exit
+    fi
 }
 clear
 listdisks
 gettarget
-
