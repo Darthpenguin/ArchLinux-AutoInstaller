@@ -2,12 +2,32 @@
 #Declare Variables
 read -p "Enter new hostname: " NEWHOSTNAME
 read -p "Enter new username: " NEWUSER
-if [ -e /dev/nvme0n1 ]; then
-	CRYPTVOL="/dev/nvme0n1p3"
-fi
-if [ -e /dev/sda ]; then
-	CRYPTVOL="/dev/sda3"
-fi
+function listdisks {
+	disk=()
+	size=()
+	name=()
+	while IFS= read -r -d $'\0' device; do
+		device=${device/\/dev\//}
+		disk+=($device)
+		name+=("`cat "/sys/class/block/$device/device/model"`")
+		size+=("`cat "/sys/class/block/$device/size"`")
+	done < <(find "/dev" -regex '/dev/sd[a-z]\|/dev/vd[a-z]\|/dev/hd[a-z]\|/dev/nvme[0-9]n[0-9]' -print0)
+	echo -e "Device Name\tModel\t\t\tSize"
+	for i in `seq 0 $((${#disk[@]}-1))`; do
+		echo -e "${disk}[$i]}\t\t${name}[$i]\t${size[$i]}"
+	done
+}
+function setcryptvar {
+	fdisk -l $TARGET
+	echo "Enter th device name for the large volume you want to encrypt (partition 3)"
+	read -p "LUKS Partition: " CRYPTPART
+	if [[ ! -f "$CRYPTPART" ]]; then
+		echo "That partiton does not exist. Tray again or press [Ctrl]+[C] to terminate"
+		setcryptvar
+	else
+		encryptdisk
+	fi
+}
 #Set timezone
 ln -sf /usr/share/zoneinfo/America/Toronto /etc/localtime
 hwclock --systohc
@@ -25,7 +45,7 @@ mkdir /root/secrets
 chmod 700 /root/secrets
 head -c 64 /dev/urandom > /root/secrets/crypto_keyfile.bin
 chmod 600 /root/secrets/crypto_keyfile.bin
-cryptsetup -v luksAddKey -i 1 $CRYPTVOL /root/secrets/crypto_keyfile.bin
+cryptsetup -v luksAddKey -i 1 $CRYPTPART /root/secrets/crypto_keyfile.bin
 #Configure mkinitcpio
 sed -i "/^HOOKS=.*/c\HOOKS=(base udev autodetect keyboard modconf block encrypt lvm2 filesystems resume fsck)" /etc/mkinitcpio.conf
 sed -i "/^FILES=()/c\FILES=(\/root\/secrets\/crypto_keyfile.bin)" /etc/mkinitcpio.conf
@@ -34,7 +54,7 @@ mkinitcpio -p linux
 passwd
 #Configure GRUB
 sed -i "/#GRUB_ENABLE_CRYPTODISK=y/ s/# *//" /etc/default/grub
-IFS=\" read -r _ vUUID _ < <(blkid $CRYPTVOL -s UUID)
+IFS=\" read -r _ vUUID _ < <(blkid $CRYPTPART -s UUID)
 sed -i "/^GRUB_CMDLINE_LINUX=.*/c\GRUB_CMDLINE_LINUX=\"cryptdevice=UUID=${vUUID}:cryptlvm\" root=\/dev\/vg\/root cryptkey=rootfs:\/root\/secrets\/crypto_keyfile.bin resume=\/dev\/vg\/swap" /etc/default/grub
 grub-install --target=x86_64-efi --efi-directory=/efi
 grub-mkconfig -o /boot/grub/grub.cfg
@@ -69,4 +89,4 @@ systemctl enable avahi-daemon
 #Configure lightdm
 sed -i "/^#greeter-session=example-gtk-gnome/c\greeter-session=lightdm-gtk-greeter" /etc/lightdm/lightdm.conf
 #Copy Arc Color Theme to xed
-.local/share/xed/styles/xed-arc-color-theme.xml
+cp xed-arc-color-theme.xml /usr/share/xed/styles/xed-arc-color-theme.xml

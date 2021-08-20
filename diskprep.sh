@@ -1,26 +1,74 @@
 #!/bin/sh
-#Get device name
-if [ -e /dev/nvme0n1 ]; then
-	TARGET=/dev/nvme0n1
-	EFIVOL=/dev/nvme0n1p2
-	CRYPTVOL=/dev/nvme0n1p3
-fi
-if [ -e /dev/sda ]; then
-	TARGET=/dev/sda
-	EFIVOL=/dev/sda2
-	CRYPTVOL=/dev/sda3
-fi
 #Turn on Network Time Protocol
 timedatectl set-ntp true
+#Get device name
+function listdisks {
+	disk=()
+	size=()
+	name=()
+	while IFS= read -r -d $'\0' device; do
+		device=${device/\/dev\//}
+		disk+=($device)
+		name+=("`cat "/sys/class/block/$device/device/model"`")
+		size+=("`cat "/sys/class/block/$device/size"`")
+	done < <(find "/dev" -regex '/dev/sd[a-z]\|/dev/vd[a-z]\|/dev/hd[a-z]\|/dev/nvme[0-9]n[0-9]' -print0)
+	echo -e "Device Name\tModel\t\t\tSize"
+	for i in `seq 0 $((${#disk[@]}-1))`; do
+		echo -e "${disk}[$i]}\t\t${name}[$i]\t${size[$i]}"
+	done
+}
+function gettarget {
+	echo
+	echo "Enter the name of the target device you want to install Arch Linux on."
+	echo "!!!WARNING!!! THIN WILL DESTROY ALL THE DATA ON THE DISK!"
+	read -p "Device: " TARGET
+	if [ -e "$TARGET" ]; then
+		partitiondisk
+	else
+		echo "Target does not exist. Try again or press [Ctrl]+[C] to terminate"
+		listdisks
+		gettarget
+	fi
+}
 #Wipe /dev/sda and partition
-sgdisk --zap-all $TARGET
-sgdisk -n 0:0:+1MiB -t 0:ef02 -c 0:grub $TARGET
-sgdisk -n 0:0:+512MiB -t 0:ef00 -c 0:boot $TARGET
-sgdisk -n 0:0:0 -t 0:8309 -c 0:cryptlvm $TARGET
+function partitiondisk {
+	echo "Partitioning the disk..."
+	sgdisk --zap-all "$TARGET"
+	sgdisk -n 0:0:+1MiB -t 0:ef02 -c 0:grub "$TARGET"
+	sgdisk -n 0:0:+512MiB -t 0:ef00 -c 0:boot "$TARGET"
+	sgdisk -n 0:0:0 -t 0:8309 -c 0:cryptlvm "$TARGET"
+	setefivar
+}
+function setefivar {
+	fdisk -l "$TARGET"
+	echo "Enter the device name for the efi partition (partition 2)"
+	read -p "EFI Partition: " EFIPART
+	if [ ! -f "$EFIPART" ]; then
+		echo "That partiton does not exist. Try again or press [Ctrl]+[C] to terminate"
+		setefivar
+	else
+		setcryptvar
+	fi
+}
+function setcryptvar {
+	fdisk -l $TARGET
+	echo "Enter th device name for the large volume you want to encrypt (partition 3)"
+	read -p "LUKS Partition: " CRYPTPART
+	if [[ ! -f "$CRYPTPART" ]]; then
+		echo "That partiton does not exist. Tray again or press [Ctrl]+[C] to terminate"
+		setcryptvar
+	else
+		encryptdisk
+	fi
+}
+function encryptdisk {
 #Encrypt partition 3
-cryptsetup luksFormat --type luks1 --use-random -S 1 -s 512 -h sha512 -i 5000 $CRYPTVOL
-cryptsetup open $CRYPTVOL cryptlvm
+cryptsetup luksFormat --type luks1 --use-random -S 1 -s 512 -h sha512 -i 5000 $CRYPTPART
+cryptsetup open $CRYPTPART cryptlvm
+createlvm
+}
 #Create logical volumes
+function createlvm {
 pvcreate /dev/mapper/cryptlvm
 vgcreate vg /dev/mapper/cryptlvm
 lvcreate -L 16G vg -n swap
@@ -34,13 +82,23 @@ mount /dev/vg/root /mnt
 mkdir /mnt/home
 mount /dev/vg/home /mnt/home
 swapon /dev/vg/swap
-mkfs.fat -F32 $EFIVOL
+mkfs.fat -F32 $EFIPART
 mkdir /mnt/efi
-mount $EFIVOL /mnt/efi
-#Install the base system
-#Get Processor type (amd/Intel)
-"!!!GET THE PROCESSOR TYPE AND STORE AS VARIABLE!!!"
+mount $EFIPART /mnt/efi
+installbasesys
+}
+function installbasesys {
+echo "Do you have an Intel or an AMD processor?"
+read -p "Processor: " VENDOR
+if [ "$VENDOR"=="Intel" ]
+	PROCESSOR="intel-ucode"
+elif [ "$VENDOR"=="AMD" ]
+	PROCESSOR="amd-ucode"
+else
+	echo "Invalid entry."
+	installbasesys
+fi
 pacstrap /mnt base linux linux-firmware mkinitcpio lvm2 vi nano dhcpcd wpa_supplicant grub efibootmgr $PROCESSOR sudo pacman-contrib
-#Create the fstab
 genfstab -U /mnt >> /mnt/etc/fstab
+}
 echo "Copy files to /mnt/root/ then type arch-chroot /mnt to enter the new Arch Installation."
