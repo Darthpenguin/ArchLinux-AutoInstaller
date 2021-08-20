@@ -91,7 +91,7 @@ function installbasesys {
 		echo "Invalid entry."
 		installbasesys
 	fi
-	pacstrap /mnt base linux linux-firmware mkinitcpio lvm2 vi nano dhcpcd wpa_supplicant grub efibootmgr $PROCESSOR sudo pacman-contrib
+	pacstrap /mnt base linux linux-firmware mkinitcpio lvm2 vi vim nano dhcpcd wpa_supplicant grub efibootmgr $PROCESSOR sudo pacman-contrib base-devel dmidecode
 	genfstab -U /mnt >> /mnt/etc/fstab
 }
 listdisks
@@ -102,4 +102,9 @@ setcryptvar
 encryptdisk
 createlvm
 installbasesys
-echo "Copy files to /mnt/root/ then type arch-chroot /mnt to enter the new Arch Installation."
+cp sysprep.sh /mnt/root/sysprep.sh
+mkdir -p /mnt/etc/skel/.local/share/xed/styles
+cp xed-arc-color-theme.xml /mnt/etc/skel/.local/share/xed/styles/xed-arc-color-theme.xml
+cp bash.bashrc /mnt/etc/bash.bashrc
+cp bash.bashrc /mnt/etc/skel/.bashrc
+arch-chroot /mnt ./root/sysprep.sh
