@@ -41,6 +41,7 @@ grub-mkconfig -o /boot/grub/grub.cfg
 chmod 700 /boot
 #Create new user
 useradd -m -G wheel,rfkill -s /bin/bash $NEWUSER
+echo "Enter Password for $NEWUSER"
 passwd $NEWUSER
 #Configure nano
 sed -i "/# include \"/usr/share/nano/*.nanorc\"/ s/# *//" /etc/nanorc
@@ -56,6 +57,7 @@ if [ $? == 0 ]; then
 	VIDDRIVER=xf86-video-intel
 fi
 lspci -v | egrep -i --color 'vga|3D|2d' | grep "AMD" &> /dev/null
+if [ $? == 0 ]; then
 	VIDDRIVER=xf86-video-amdgpu
 fi
 pacman -Syy

@@ -38,7 +38,9 @@ mkfs.fat -F32 $EFIVOL
 mkdir /mnt/efi
 mount $EFIVOL /mnt/efi
 #Install the base system
-pacstrap /mnt base linux linux-firmware mkinitcpio lvm2 vi nano dhcpcd wpa_supplicant grub efibootmgr intel-ucode sudo pacman-contrib
+#Get Processor type (amd/Intel)
+"!!!GET THE PROCESSOR TYPE AND STORE AS VARIABLE!!!"
+pacstrap /mnt base linux linux-firmware mkinitcpio lvm2 vi nano dhcpcd wpa_supplicant grub efibootmgr $PROCESSOR sudo pacman-contrib
 #Create the fstab
 genfstab -U /mnt >> /mnt/etc/fstab
 echo "Copy files to /mnt/root/ then type arch-chroot /mnt to enter the new Arch Installation."
