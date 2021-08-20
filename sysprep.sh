@@ -68,3 +68,5 @@ systemctl enable cups
 systemctl enable avahi-daemon
 #Configure lightdm
 sed -i "/^#greeter-session=example-gtk-gnome/c\greeter-session=lightdm-gtk-greeter" /etc/lightdm/lightdm.conf
+#Copy Arc Color Theme to xed
+.local/share/xed/styles/xed-arc-color-theme.xml
