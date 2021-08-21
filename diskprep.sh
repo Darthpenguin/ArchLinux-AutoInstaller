@@ -97,7 +97,7 @@ createlvm
 installbasesys
 chmod +x sysprep.sh
 cp sysprep.sh /mnt/root/sysprep.sh
-cp aurconfig.sh /mnt/root/aurconfig.sh
+cp Comtrya.sh /mnt/root/Comtrya.sh
 mkdir -p /mnt/etc/skel/.local/share/xed/styles
 cp xed-arc-color-theme.xml /mnt/etc/skel/.local/share/xed/styles/xed-arc-color-theme.xml
 cp bash.bashrc /mnt/etc/bash.bashrc
