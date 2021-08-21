@@ -19,4 +19,4 @@ pacaur --noconfirm -S google-chrome
 pamac-aur 
 noto-fonts-emoji noto-fonts noto-fonts-cjk 
 numix-circle-icon-theme-git numix-square-icon-theme numix-folders-git 
-xviewer xplayer pix gnome-keyring cinnamon-sound-effects gnome-logs-git
+xviewer xplayer pix cinnamon-sound-effects gnome-logs-git
