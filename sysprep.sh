@@ -96,7 +96,7 @@ pacman --noconfirm -Syy
 pacman --noconfirm -S man xdg-user-dirs meson bash-completion ttf-dejavu base-devel
 pacman --noconfirm -S xorg xorg-drivers xorg-twm xorg-xclock xterm xcursor-vanilla-dmz xorg-xinit
 pacman --noconfirm -S cinnamon arc-gtk-theme x-apps xdg-user-dirs-gtk cheese simple-scan file-roller nemo-fileroller blueberry
-pacman --noconfirm -S gnome-calculator gnome-disk-utility gnome-screenshot gnome-sound-recorder gnome-terminal gnome-logs yelp yelp-tools
+pacman --noconfirm -S gnome-calculator gnome-disk-utility gnome-screenshot gnome-sound-recorder gnome-terminal gnome-logs gnome-keyring yelp yelp-tools
 pacman --noconfirm -S cups networkmanager bluez-utils bluez lightdm-gtk-greeter-settings lightdm lightdm-gtk-greeter system-config-printer
 systemctl enable NetworkManager
 systemctl enable lightdm
