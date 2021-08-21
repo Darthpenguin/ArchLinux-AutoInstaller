@@ -81,7 +81,7 @@ function createlvm {
 	mount $EFIPART /mnt/efi
 }
 function installbasesys {
-	pacstrap /mnt base linux linux-firmware mkinitcpio intel-ucode lvm2 vi vim nano dhcpcd wpa_supplicant grub efibootmgr $PROCESSOR sudo pacman-contrib base-devel dmidecode
+	pacstrap /mnt base linux linux-firmware mkinitcpio intel-ucode lvm2 vi vim nano dhcpcd wpa_supplicant grub efibootmgr sudo pacman-contrib base-devel dmidecode bluez-utils bluez
 	genfstab -U /mnt >> /mnt/etc/fstab
 }
 listdisks
