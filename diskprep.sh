@@ -102,6 +102,7 @@ setcryptvar
 encryptdisk
 createlvm
 installbasesys
+chmod +x sysprep.sh
 cp sysprep.sh /mnt/root/sysprep.sh
 mkdir -p /mnt/etc/skel/.local/share/xed/styles
 cp xed-arc-color-theme.xml /mnt/etc/skel/.local/share/xed/styles/xed-arc-color-theme.xml
