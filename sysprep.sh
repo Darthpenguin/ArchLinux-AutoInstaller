@@ -91,8 +91,8 @@ echo "Configure package manager..."
 cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup
 curl -s "https://archlinux.org/mirrorlist/?country=CA&country=GB&country=US&protocol=https&ip_version=4&use_mirror_status=on" | sed -e 's/^#Server/Server/' -e '/^#/d' | rankmirrors -n 6 - > /etc/pacman.d/mirrorlist
 echo "Installing packages..."
-pacman -Syy
-pacman -S xf86-video-intel cups man xorg-server xorg-twm xorg-xclock xterm xcursor-vanilla-dmz xf86-input-libinput xorg-xinit cinnamon arc-gtk-theme xed xreader lightdm lightdm-gtk-greeter xdg-user-dirs xdg-user-dirs-gtk cheese simple-scan file-roller gnome-calculator gnome-disk-utility yelp yelp-tools gnome-screenshot gnome-sound-recorder gnome-terminal gnome-logs meson networkmanager
+pacman --noconfirm -Syy
+pacman --noconfirm -S xf86-video-intel cups man xorg-server xorg-twm xorg-xclock xterm xcursor-vanilla-dmz xf86-input-libinput xorg-xinit cinnamon arc-gtk-theme xed xreader lightdm lightdm-gtk-greeter xdg-user-dirs xdg-user-dirs-gtk cheese simple-scan file-roller gnome-calculator gnome-disk-utility yelp yelp-tools gnome-screenshot gnome-sound-recorder gnome-terminal gnome-logs meson networkmanager
 systemctl enable NetworkManager
 systemctl enable lightdm
 systemctl enable cups
