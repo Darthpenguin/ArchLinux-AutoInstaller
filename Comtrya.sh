@@ -26,3 +26,4 @@ gsettings set org.cinnamon.theme name "Arc-Dark"
 gsettings set org.cinnamon.desktop.interface gtk-theme "Arc-Dark"
 gsettings set org.cinnamon.desktop.interface icon-theme 'Numix-Circle'
 gsettings set org.cinnamon.desktop.wm.preferences theme "Arc-Dark"
+gsettings set org.gnome.desktop.background picture-uri file://///usr/share/backgrounds/gnome/LightBulb.jpg
