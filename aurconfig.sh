@@ -18,4 +18,5 @@ pacaur --noconfirm -S gnome-terminal-transparency
 pacaur --noconfirm -S google-chrome
 pamac-aur 
 noto-fonts-emoji noto-fonts noto-fonts-cjk 
-numix-circle-icon-theme-git numix-square-icon-theme numix-folders-git xviewer xplayer pix lightdm-gtk-greeter-settings gnome-keyring cinnamon-sound-effects gnome-logs-git
+numix-circle-icon-theme-git numix-square-icon-theme numix-folders-git 
+xviewer xplayer pix gnome-keyring cinnamon-sound-effects gnome-logs-git
