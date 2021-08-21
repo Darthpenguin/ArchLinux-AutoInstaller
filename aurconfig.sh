@@ -1,4 +1,6 @@
 #!/bin/sh
+sudo timedatectl set-ntp
+sudo pacman-key --populate archlinux
 sudo pacman -Syyu
 sudo pacman -S git
 cd $HOME
@@ -12,4 +14,8 @@ cd $HOME
 sudo rm -rf auracle-git
 sudo rm -rf pacaur
 sudo bash -c "echo displaybuildfiles=none >> /etc/xdg/pacaur/config"
-pacaur --noconfirm -S gnome-terminal-transparency google-chrome pamac-aur noto-fonts-emoji noto-fonts noto-fonts-cjk numix-circle-icon-theme-git numix-square-icon-theme numix-folders-git system-config-printer xviewer xplayer pix lightdm-gtk-greeter-settings gnome-keyring cinnamon-sound-effects gnome-logs-git
+pacaur --noconfirm -S gnome-terminal-transparency
+pacaur --noconfirm -S google-chrome
+pamac-aur 
+noto-fonts-emoji noto-fonts noto-fonts-cjk 
+numix-circle-icon-theme-git numix-square-icon-theme numix-folders-git xviewer xplayer pix lightdm-gtk-greeter-settings gnome-keyring cinnamon-sound-effects gnome-logs-git
