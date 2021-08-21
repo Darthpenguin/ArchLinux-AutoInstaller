@@ -73,8 +73,8 @@ useradd -m -G wheel,rfkill -s /bin/bash $NEWUSER
 echo "Enter Password for $NEWUSER"
 passwd $NEWUSER
 mkdir /home/$NEWUSER/Desktop
-cp /root/aurconfig.sh /home/$NEWUSER/Desktop/aurconfig.sh
-chmod +x /home/$NEWUSER/Desktop/aurconfig.sh
+mv /root/Comtrya.sh /home/$NEWUSER/Desktop/Comtrya.sh
+chmod +x /home/$NEWUSER/Desktop/Comtrya.sh
 ############################
 ### Editing config files ###
 ############################
@@ -107,4 +107,4 @@ echo "Configuring lightdm..."
 sed -i "/^#greeter-session=example-gtk-gnome/c\greeter-session=lightdm-gtk-greeter" /etc/lightdm/lightdm.conf
 echo
 echo "Install complete. exit. reboot. pray."
-echo "Remember to run the aurconfig.sh script from yout desktop"
+echo "Remember to run the Comtrya.sh script from yout desktop"
