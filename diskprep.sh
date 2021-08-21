@@ -103,4 +103,5 @@ cp xed-arc-color-theme.xml /mnt/etc/skel/.local/share/xed/styles/xed-arc-color-t
 cp bash.bashrc /mnt/etc/bash.bashrc
 cp bash.bashrc /mnt/etc/skel/.bashrc
 cp bash_aliases /mnt/etc/skel/.bash_aliases
+cp keybindings.conf /mnt/home/$NEWUSER/Desktop/.keybindings.dconf
 arch-chroot /mnt /root/sysprep.sh
