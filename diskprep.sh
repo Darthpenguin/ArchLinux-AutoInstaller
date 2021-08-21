@@ -43,9 +43,9 @@ function setefivar {
 }
 function setcryptvar {
 	if [[ ${TARGET} =~ /dev/sd[a-z] || /dev/vd[a-z] || /dev/hd[a-z] ]]; then
-        EFIPART=${TARGET}3
+        CRYPTPART=${TARGET}3
     elif [[ ${TARGET} =~ /dev/nvme[0-9]n[0-9] ]]; then
-        EFIPART=${TARGET}p3
+        CRYPTPART=${TARGET}p3
     fi
 }
 function encryptdisk {
