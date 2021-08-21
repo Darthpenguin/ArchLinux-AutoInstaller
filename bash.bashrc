@@ -34,4 +34,6 @@ esac
 
 [ -r /usr/share/bash-completion/bash_completion   ] && . /usr/share/bash-completion/bash_completion
 
-
+if [ -e $HOME/.bash_aliases ]; then
+    source $HOME/.bash_aliases
+fi
