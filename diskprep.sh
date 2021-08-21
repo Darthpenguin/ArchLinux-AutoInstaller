@@ -29,6 +29,8 @@ function gettarget {
 }
 function partitiondisk {
 	echo "Partitioning the disk..."
+	wipefs -a ${TARGET}*
+	partprobe
 	sgdisk --zap-all "$TARGET"
 	sgdisk -n 0:0:+1MiB -t 0:ef02 -c 0:grub "$TARGET"
 	sgdisk -n 0:0:+512MiB -t 0:ef00 -c 0:boot "$TARGET"
@@ -103,6 +105,6 @@ cp xed-arc-color-theme.xml /mnt/etc/skel/.local/share/xed/styles/xed-arc-color-t
 cp bash.bashrc /mnt/etc/bash.bashrc
 cp bash.bashrc /mnt/etc/skel/.bashrc
 cp bash_aliases /mnt/etc/skel/.bash_aliases
-cp keybindings.conf /mnt/home/$NEWUSER/Desktop/.keybindings.dconf
+cp keybindings.conf /mnt/keybindings.dconf
 cp lightdm-gtk-greeter.conf /mnt/lightdm-gtk-greeter.conf
 arch-chroot /mnt /root/sysprep.sh
