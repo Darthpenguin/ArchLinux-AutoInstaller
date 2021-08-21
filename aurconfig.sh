@@ -16,7 +16,7 @@ sudo rm -rf pacaur
 sudo bash -c "echo displaybuildfiles=none >> /etc/xdg/pacaur/config"
 pacaur --noconfirm -S gnome-terminal-transparency
 pacaur --noconfirm -S google-chrome
-pamac-aur 
-noto-fonts-emoji noto-fonts noto-fonts-cjk 
-numix-circle-icon-theme-git numix-square-icon-theme numix-folders-git 
-xviewer xplayer pix cinnamon-sound-effects gnome-logs-git
+pacaur --noconfirm -S pamac-aur 
+pacaur --noconfirm -S noto-fonts-emoji noto-fonts noto-fonts-cjk 
+pacaur --noconfirm -S numix-circle-icon-theme-git numix-square-icon-theme numix-folders-git 
+pacaur --noconfirm -S xviewer xplayer pix cinnamon-sound-effects gnome-logs-git
