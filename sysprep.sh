@@ -85,7 +85,7 @@ passwd $NEWUSER
 echo "Configuring nano..."
 sed -i "/# include \"\/usr\/share\/nano\/*.nanorc\"/ s/# *//" /etc/nanorc
 echo "Configuring sudo..."
-sed -i "/# %wheel ALL=\(ALL\) ALL/ s/# *//" /etc/sudoers
+sed -i "/# %wheel ALL=(ALL) ALL/ s/# *//" /etc/sudoers
 sed -i '/^# Defaults!REBOOT !log_output/a Defaults env_reset,pwfeedback' /etc/sudoers
 echo "Configure package manager..."
 cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup
