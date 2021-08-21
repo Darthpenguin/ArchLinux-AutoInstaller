@@ -20,8 +20,8 @@ pacaur --noconfirm -S pamac-aur
 pacaur --noconfirm -S noto-fonts-emoji noto-fonts noto-fonts-cjk 
 pacaur --noconfirm -S numix-circle-icon-theme-git numix-square-icon-theme numix-folders-git 
 pacaur --noconfirm -S xviewer xplayer pix cinnamon-sound-effects gnome-logs-git redshift-gtk-git
-dconf load /org/cinnamon/desktop/keybindings/ < $HOME/Desktop/.keybindings-backup.dconf
-rm $HOME/Desktop/.keybindings-backup.dconf
+dconf load /org/cinnamon/desktop/keybindings/ < /keybindings-backup.dconf
+rm /keybindings-backup.dconf
 gsettings set org.cinnamon.theme name "Arc-Dark"
 gsettings set org.cinnamon.desktop.interface gtk-theme "Arc-Dark"
 gsettings set org.cinnamon.desktop.interface icon-theme 'Numix-Circle'
