@@ -95,10 +95,12 @@ pacman -Syy
 lspci -v | egrep -i --color 'vga|3d|2d' | grep "Intel Corporation HD Graphics" &> /dev/null
 if [ $? == 0 ]; then
 	pacman -S xf86-video-intel
+	finalstretch
 fi
 lspci -v | egrep -i --color 'vga|3D|2d' | grep "AMD" &> /dev/null
 if [ $? == 0 ]; then
-	pscman -S xf86-video-amdgpu
+	pacman -S xf86-video-amdgpu
+	finalstratch
 elif [ $? == 1 ]; then
 	pacman -Ss xf86-video
 	echo "What video driver do you want to install?"
@@ -107,8 +109,10 @@ elif [ $? == 1 ]; then
 		echo "No video driver selected. Proceeding."
 	else
 		pacman -S $VIDDRIVER
+		finalstretch
 	fi
 fi
+function finalstretch {
 pacman -S cups man xorg-server xorg-twm xorg-xclock xterm xcursor-vanilla-dmz xf86-input-libinput xorg-xinit cinnamon arc-gtk-theme xed xreader lightdm lightdm-gtk-greeter xdg-user-dirs xdg-user-dirs-gtk cheese simple-scan file-roller gnome-calculator gnome-disk-utility yelp yelp-tools gnome-screenshot gnome-sound-recorder gnome-terminal gnome-logs meson networkmanager
 systemctl enable NetworkManager
 systemctl enable lightdm
@@ -118,3 +122,4 @@ echo "Configuring lightdm..."
 sed -i "/^#greeter-session=example-gtk-gnome/c\greeter-session=lightdm-gtk-greeter" /etc/lightdm/lightdm.conf
 echo
 echo "Install complete. exit. reboot. and pray."
+}
