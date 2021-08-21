@@ -20,3 +20,4 @@ pacaur --noconfirm -S pamac-aur
 pacaur --noconfirm -S noto-fonts-emoji noto-fonts noto-fonts-cjk 
 pacaur --noconfirm -S numix-circle-icon-theme-git numix-square-icon-theme numix-folders-git 
 pacaur --noconfirm -S xviewer xplayer pix cinnamon-sound-effects gnome-logs-git
+dconf load /org/cinnamon/desktop/keybindings/ <$HOME/Desktop/.keybindings-backup.dconf
