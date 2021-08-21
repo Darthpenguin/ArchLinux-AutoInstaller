@@ -22,7 +22,12 @@ function gettarget {
 	echo
 	echo "Enter the name of the primary system disk"
 	echo -p "Disk: " DISK
-	TARGET="/dev/$DISK"
+	if [ ! -z $DISK ]; then
+		TARGET="/dev/$DISK"
+	else
+		echo "Please do not leave this blank."
+		gettarget
+	fi
 	echo $TARGET
 	if [ ! -e "$TARGET" ]; then
 		echo "That disk does not exist. Try again or press [Ctrl]+[C] to terminate"
@@ -38,7 +43,7 @@ function setcryptvar {
 		setcryptvar
 	fi
 }
-listdisk
+listdisks
 gettarget
 setcryptvar
 echo "Setting the timezone..."
