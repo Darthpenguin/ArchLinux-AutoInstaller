@@ -102,4 +102,5 @@ mkdir -p /mnt/etc/skel/.local/share/xed/styles
 cp xed-arc-color-theme.xml /mnt/etc/skel/.local/share/xed/styles/xed-arc-color-theme.xml
 cp bash.bashrc /mnt/etc/bash.bashrc
 cp bash.bashrc /mnt/etc/skel/.bashrc
+cp bash_aliases /mnt/etc/skel/.bash_aliases
 arch-chroot /mnt /root/sysprep.sh
