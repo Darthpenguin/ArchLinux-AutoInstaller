@@ -21,7 +21,7 @@ function listdisks {
 function gettarget {
 	echo
 	echo "Enter the name of the primary system disk"
-	echo -p "Disk: " DISK
+	read -p "Disk: " DISK
 	if [ ! -z $DISK ]; then
 		TARGET="/dev/$DISK"
 	else
