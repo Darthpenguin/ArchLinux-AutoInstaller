@@ -1,7 +1,5 @@
 #!/bin/sh
-#Turn on Network Time Protocol
 timedatectl set-ntp true
-#Get device name
 function listdisks {
 	disk=()
 	size=()
@@ -23,52 +21,43 @@ function gettarget {
 	echo "!!!WARNING!!! THIN WILL DESTROY ALL THE DATA ON THE DISK!"
 	read -p "Device: " DISK
 	TARGET="/dev/$DISK"
-	echo $TARGET
+	echo "Installing system to $TARGET"
 	if [ ! -e $TARGET ]; then
 		echo "Target does not exist. Try again or press [Ctrl]+[C] to terminate"
 		gettarget
 	fi
 }
-#Wipe /dev/sda and partition
 function partitiondisk {
 	echo "Partitioning the disk..."
 	sgdisk --zap-all "$TARGET"
 	sgdisk -n 0:0:+1MiB -t 0:ef02 -c 0:grub "$TARGET"
 	sgdisk -n 0:0:+512MiB -t 0:ef00 -c 0:boot "$TARGET"
 	sgdisk -n 0:0:0 -t 0:8309 -c 0:cryptlvm "$TARGET"
-	echo
 }
 function setefivar {
-	fdisk -l "$TARGET"
-	echo "Enter the device name for the efi partition (partition 2)"
-	read -p "EFI Partition: " EFIPART
-	if [ ! -e "$EFIPART" ]; then
-		echo "That partiton does not exist. Try again or press [Ctrl]+[C] to terminate"
-		setefivar
-	fi
+    if [[ ${TARGET} =~ /dev/sd[a-z] || /dev/vd[a-z] || /dev/hd[a-z] ]]; then
+        EFIPART=${TARGET}2
+    elif [[ ${TARGET} =~ /dev/nvme[0-9]n[0-9] ]]; then
+        EFIPART=${TARGET}p2
+    fi
 }
 function setcryptvar {
-	fdisk -l $TARGET
-	echo "Enter th device name for the large volume you want to encrypt (partition 3)"
-	read -p "LUKS Partition: " CRYPTPART
-	if [[ ! -e "$CRYPTPART" ]]; then
-		echo "That partiton does not exist. Tray again or press [Ctrl]+[C] to terminate"
-		setcryptvar
-	fi
+	if [[ ${TARGET} =~ /dev/sd[a-z] || /dev/vd[a-z] || /dev/hd[a-z] ]]; then
+        EFIPART=${TARGET}3
+    elif [[ ${TARGET} =~ /dev/nvme[0-9]n[0-9] ]]; then
+        EFIPART=${TARGET}p3
+    fi
 }
 function encryptdisk {
-#Encrypt partition 3
 	cryptsetup luksFormat --type luks1 --use-random -S 1 -s 512 -h sha512 -i 5000 $CRYPTPART
 	cryptsetup open $CRYPTPART cryptlvm
 }
-#Create logical volumes
 function createlvm {
 	pvcreate /dev/mapper/cryptlvm
 	vgcreate vg /dev/mapper/cryptlvm
 	lvcreate -L 16G vg -n swap
 	lvcreate -L 32G vg -n root
 	lvcreate -l 100%FREE vg -n home
-	#Format and mount the partitions
 	mkfs.ext4 /dev/vg/root
 	mkfs.ext4 /dev/vg/home
 	mkswap /dev/vg/swap
@@ -81,9 +70,23 @@ function createlvm {
 	mount $EFIPART /mnt/efi
 }
 function installbasesys {
-	pacstrap /mnt base linux linux-firmware mkinitcpio intel-ucode lvm2 vi vim nano dhcpcd wpa_supplicant grub efibootmgr sudo pacman-contrib base-devel dmidecode bluez-utils bluez
+    lscpu | grep -i intel > /dev/null
+    if [[ $? = 0 ]]; then
+        MICROCODE=intel-ucode
+    fi
+    lscpu | grep -i amd > /dev/null
+    if [[ $? = 0 ]]; then
+        MICROCODE=amd-ucode
+    fi
+    if [[ -z $MICROCODE ]]; then
+        echo
+        echo "PROCESSOR TYPE UNKNOWN! NOT INSTALLING MICROCODE!"
+    fi
+	pacstrap /mnt base linux linux-firmware mkinitcpio $MICROCODE lvm2 vi nano dhcpcd wpa_supplicant grub efibootmgr sudo pacman-contrib dmidecode
 	genfstab -U /mnt >> /mnt/etc/fstab
 }
+clear
+echo "Welcome to the Arch Linux AutoInstaller for laptops."
 listdisks
 gettarget
 partitiondisk
@@ -94,6 +97,7 @@ createlvm
 installbasesys
 chmod +x sysprep.sh
 cp sysprep.sh /mnt/root/sysprep.sh
+cp aurconfig.sh /mnt/root/aurconfig.sh
 mkdir -p /mnt/etc/skel/.local/share/xed/styles
 cp xed-arc-color-theme.xml /mnt/etc/skel/.local/share/xed/styles/xed-arc-color-theme.xml
 cp bash.bashrc /mnt/etc/bash.bashrc
