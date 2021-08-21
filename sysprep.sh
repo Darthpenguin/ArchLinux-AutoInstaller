@@ -105,6 +105,8 @@ systemctl enable avahi-daemon
 systemctl enable bluetooth
 echo "Configuring lightdm..."
 sed -i "/^#greeter-session=example-gtk-gnome/c\greeter-session=lightdm-gtk-greeter" /etc/lightdm/lightdm.conf
+usermod -a -G $NEWUSER lightdm
+chmod g+rx /home/$NEWUSER
 echo
 echo "Install complete. exit. reboot. pray."
 echo "Remember to run the Comtrya.sh script from yout desktop"
