@@ -83,7 +83,7 @@ useradd -m -G wheel,rfkill -s /bin/bash $NEWUSER
 echo "Enter Password for $NEWUSER"
 passwd $NEWUSER
 echo "Configuring nano..."
-sed -i "/# include \"/usr/share/nano/*.nanorc\"/ s/# *//" /etc/nanorc
+sed -i "/# include \"\/usr\/share\/nano\/*.nanorc\"/ s/# *//" /etc/nanorc
 echo "Configuring sudo..."
 sed -i "/# %wheel ALL=(ALL) ALL/ s/# *//" /etc/sudoers
 sed -i '/^# Defaults!REBOOT !log_output/a Defaults env_reset,pwfeedback' /etc/sudoers
