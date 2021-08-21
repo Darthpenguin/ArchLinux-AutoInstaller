@@ -81,17 +81,7 @@ function createlvm {
 	mount $EFIPART /mnt/efi
 }
 function installbasesys {
-	echo "Do you have an Intel or an AMD processor?"
-	read -p "Processor: " VENDOR
-	if [ "$VENDOR"=="Intel" ]; then
-		PROCESSOR="intel-ucode"
-	elif [ "$VENDOR"=="AMD" ]; then
-		PROCESSOR="amd-ucode"
-	else
-		echo "Invalid entry."
-		installbasesys
-	fi
-	pacstrap /mnt base linux linux-firmware mkinitcpio lvm2 vi vim nano dhcpcd wpa_supplicant grub efibootmgr $PROCESSOR sudo pacman-contrib base-devel dmidecode
+	pacstrap /mnt base linux linux-firmware mkinitcpio intel-ucode lvm2 vi vim nano dhcpcd wpa_supplicant grub efibootmgr $PROCESSOR sudo pacman-contrib base-devel dmidecode
 	genfstab -U /mnt >> /mnt/etc/fstab
 }
 listdisks
