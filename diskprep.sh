@@ -28,9 +28,10 @@ function gettarget {
 	fi
 }
 function partitiondisk {
-	echo "Partitioning the disk..."
+	echo "Erasing ${TARGET}*"
 	wipefs -a ${TARGET}*
 	partprobe
+	echo "Partitioning the disk..."
 	sgdisk --zap-all "$TARGET"
 	sgdisk -n 0:0:+1MiB -t 0:ef02 -c 0:grub "$TARGET"
 	sgdisk -n 0:0:+512MiB -t 0:ef00 -c 0:boot "$TARGET"
@@ -42,6 +43,7 @@ function setefivar {
     elif [[ ${TARGET} =~ /dev/nvme[0-9]n[0-9] ]]; then
         EFIPART=${TARGET}p2
     fi
+    echo "EFI partition is $EFIPART"
 }
 function setcryptvar {
 	if [[ ${TARGET} =~ /dev/sd[a-z] || /dev/vd[a-z] || /dev/hd[a-z] ]]; then
@@ -49,8 +51,10 @@ function setcryptvar {
     elif [[ ${TARGET} =~ /dev/nvme[0-9]n[0-9] ]]; then
         CRYPTPART=${TARGET}p3
     fi
+    echo "LUKS partition is $CRYPTPART"
 }
 function encryptdisk {
+	echo "Encrypting $CRYPTPART"
 	cryptsetup luksFormat --type luks1 --use-random -S 1 -s 512 -h sha512 -i 5000 $CRYPTPART
 	cryptsetup open $CRYPTPART cryptlvm
 }
@@ -91,6 +95,7 @@ clear
 echo "Welcome to the Arch Linux AutoInstaller for laptops."
 listdisks
 gettarget
+
 partitiondisk
 setefivar
 setcryptvar
