@@ -35,20 +35,15 @@ function partitiondisk {
 	sgdisk -n 0:0:+512MiB -t 0:ef00 -c 0:boot "$TARGET"
 	sgdisk -n 0:0:0 -t 0:8309 -c 0:cryptlvm "$TARGET"
 }
-function setefivar {
+function setpartvars {
     if [[ ${TARGET} =~ /dev/sd[a-z] || /dev/vd[a-z] || /dev/hd[a-z] ]]; then
         EFIPART=${TARGET}2
+	CRYPTPART=${TARGET}3
     elif [[ ${TARGET} =~ /dev/nvme[0-9]n[0-9] ]]; then
         EFIPART=${TARGET}p2
+	CRYPTPART=${TARGET}p3
     fi
     echo "EFI partition is $EFIPART"
-}
-function setcryptvar {
-    if [[ ${TARGET} =~ /dev/sd[a-z] || /dev/vd[a-z] || /dev/hd[a-z] ]]; then
-        CRYPTPART=${TARGET}3
-    elif [[ ${TARGET} =~ /dev/nvme[0-9]n[0-9] ]]; then
-        CRYPTPART=${TARGET}p3
-    fi
     echo "LUKS partition is $CRYPTPART"
 }
 function encryptdisk {
@@ -93,10 +88,8 @@ clear
 echo "Welcome to the Arch Linux AutoInstaller for laptops."
 listdisks
 gettarget
-
 partitiondisk
-setefivar
-setcryptvar
+setpartvars
 encryptdisk
 createlvm
 installbasesys
