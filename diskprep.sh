@@ -18,7 +18,7 @@ function listdisks {
 function gettarget {
 	echo
 	echo "Enter the name of the target device you want to install Arch Linux on."
-	echo "!!!WARNING!!! THIN WILL DESTROY ALL THE DATA ON THE DISK!"
+	echo "!!!WARNING!!! THIS WILL DESTROY ALL THE DATA ON THE DISK!"
 	read -p "Device: " DISK
 	TARGET="/dev/$DISK"
 	echo "Installing system to $TARGET"
