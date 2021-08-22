@@ -28,9 +28,9 @@ function gettarget {
 	fi
 }
 function partitiondisk {
-	echo "Erasing ${TARGET}*"
-	wipefs -a ${TARGET}*
-	partprobe
+	#echo "Erasing ${TARGET}*"
+	#wipefs -a ${TARGET}*
+	#partprobe
 	echo "Partitioning the disk..."
 	sgdisk --zap-all "$TARGET"
 	sgdisk -n 0:0:+1MiB -t 0:ef02 -c 0:grub "$TARGET"
