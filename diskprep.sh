@@ -21,11 +21,11 @@ function gettarget {
 	echo "!!!WARNING!!! THIS WILL DESTROY ALL THE DATA ON THE DISK!"
 	read -p "Device: " DISK
 	TARGET="/dev/$DISK"
-	echo "Installing system to $TARGET"
 	if [ ! -e $TARGET ]; then
 		echo "Target does not exist. Try again or press [Ctrl]+[C] to terminate"
 		gettarget
 	fi
+	echo "Installing system to $TARGET"
 }
 function partitiondisk {
 	echo "Partitioning the disk..."
@@ -44,7 +44,7 @@ function setefivar {
     echo "EFI partition is $EFIPART"
 }
 function setcryptvar {
-	if [[ ${TARGET} =~ /dev/sd[a-z] || /dev/vd[a-z] || /dev/hd[a-z] ]]; then
+    if [[ ${TARGET} =~ /dev/sd[a-z] || /dev/vd[a-z] || /dev/hd[a-z] ]]; then
         CRYPTPART=${TARGET}3
     elif [[ ${TARGET} =~ /dev/nvme[0-9]n[0-9] ]]; then
         CRYPTPART=${TARGET}p3
