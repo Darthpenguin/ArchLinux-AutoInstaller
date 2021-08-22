@@ -73,9 +73,6 @@ echo "Creating new user..."
 useradd -m -G wheel,rfkill -s /bin/bash $NEWUSER
 echo "Enter Password for $NEWUSER"
 passwd $NEWUSER
-mkdir /home/$NEWUSER/Desktop
-mv /root/Comtrya.sh /home/$NEWUSER/Desktop/Comtrya.sh
-chmod +x /home/$NEWUSER/Desktop/Comtrya.sh
 ############################
 ### Editing config files ###
 ############################
@@ -109,6 +106,4 @@ sed -i "/^#greeter-session=example-gtk-gnome/c\greeter-session=lightdm-gtk-greet
 usermod -a -G $NEWUSER lightdm
 chmod g+rx /home/$NEWUSER
 mv -f /lightdm-gtk-greeter.conf /etc/lightdm/lightdm-gtk-greeter.conf
-echo
-echo "Install complete. exit. reboot. pray."
-echo "Remember to run the Comtrya.sh script from yout desktop"
+reboot
