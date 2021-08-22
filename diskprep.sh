@@ -39,7 +39,8 @@ function setpartvars {
     if [[ ${TARGET} =~ /dev/sd[a-z] || /dev/vd[a-z] || /dev/hd[a-z] ]]; then
         EFIPART=${TARGET}2
 	CRYPTPART=${TARGET}3
-    elif [[ ${TARGET} =~ /dev/nvme[0-9]n[0-9] ]]; then
+    fi
+    if [[ ${TARGET} =~ /dev/nvme[0-9]n[0-9] ]]; then
         EFIPART=${TARGET}p2
 	CRYPTPART=${TARGET}p3
     fi
