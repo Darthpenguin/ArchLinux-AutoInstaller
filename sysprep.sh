@@ -10,9 +10,9 @@
 ### If you have more than one encrypted partition... ###
 ### ...this whole thing might just go tits up (0.o)  ###
 ########################################################
-DISK=$(lsblk -fs | grep crypto_LUKS | cut -f3 -d' ' | head -n 1)
-DISK="/dev/${DISK:2}"
-echo "Disk is $DISK"
+CRYPTPART=$(lsblk -fs | grep crypto_LUKS | cut -f3 -d' ' | head -n 1)
+CRYPTPART="/dev/${CRYPTPART:2}"
+echo "LUKS encrypted partition is $CRYPTPART"
 ###########################################################
 ### Setting the timezone, clock, location, and language ###
 ###########################################################
