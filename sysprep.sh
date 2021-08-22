@@ -12,6 +12,7 @@
 ########################################################
 DISK=$(lsblk -fs | grep crypto_LUKS | cut -f3 -d' ' | head -n 1)
 DISK="/dev/${DISK:2}"
+echo "Disk is $DISK"
 ###########################################################
 ### Setting the timezone, clock, location, and language ###
 ###########################################################
