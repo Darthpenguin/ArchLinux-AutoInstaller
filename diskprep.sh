@@ -29,7 +29,7 @@ function gettarget {
 }
 function partitiondisk {
 	echo "Partitioning the disk..."
-	wipefs $TARGET*
+	wipefs --all --force $TARGET
 	sgdisk --zap-all "$TARGET"
 	sgdisk -n 0:0:+1MiB -t 0:ef02 -c 0:grub "$TARGET"
 	sgdisk -n 0:0:+512MiB -t 0:ef00 -c 0:boot "$TARGET"
