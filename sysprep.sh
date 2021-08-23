@@ -106,7 +106,6 @@ echo "Configuring lightdm..."
 sed -i "/^#greeter-session=example-gtk-gnome/c\greeter-session=lightdm-gtk-greeter" /etc/lightdm/lightdm.conf
 usermod -a -G $NEWUSER lightdm
 chmod g+rx /home/$NEWUSER
-mv -f /lightdm-gtk-greeter.conf /etc/lightdm/lightdm-gtk-greeter.conf
 echo "export QT_STYLE_OVERRIDE=kvantum" >> /etc/profile
 echo "load-sample-lazy x11-bell /usr/share/sounds/elementary/stereo/bell.wav" >> /etc/pulse/default.pa
 echo "load-module module-x11-bell sample=x11-bell" >> /etc/pulse/default.pa
