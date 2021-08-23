@@ -96,7 +96,7 @@ pacman --noconfirm -S xorg xorg-drivers xorg-twm xorg-xclock xterm xcursor-vanil
 pacman --noconfirm -S cinnamon arc-gtk-theme x-apps xdg-user-dirs-gtk cheese simple-scan file-roller nemo-fileroller blueberry
 pacman --noconfirm -S gnome-calculator gnome-disk-utility gnome-screenshot gnome-sound-recorder gnome-terminal gnome-logs gnome-keyring yelp yelp-tools
 pacman --noconfirm -S cups networkmanager bluez-utils bluez system-config-printer
-pacman --noconfirm -S sound-theme-elementary kvantum-qt5
+pacman --noconfirm -S sound-theme-elementary kvantum-qt5 lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings
 systemctl enable NetworkManager
 systemctl enable lightdm
 systemctl enable cups
@@ -104,6 +104,15 @@ systemctl enable avahi-daemon
 systemctl enable bluetooth
 echo "Configuring lightdm..."
 sed -i "/^#greeter-session=example-gtk-gnome/c\greeter-session=lightdm-gtk-greeter" /etc/lightdm/lightdm.conf
+sed -i "/^#background=/c\background = /usr/share/backgrounds/gnome/LightBulb.jpg" /etc/lightdm/lightdm-gtk-greeter.conf
+sed -i "/^#theme-name=/c\theme-name = Arc-Dark" /etc/lightdm/lightdm-gtk-greeter.conf
+sed -i "/^#icon-theme-name=/c\icon-theme-name = Numix-Square" /etc/lightdm/lightdm-gtk-greeter.conf
+sed -i "/^#font-name=/c\font-name = Sans 16" /etc/lightdm/lightdm-gtk-greeter.conf
+sed -i "/^#indicators=/c\indicators = ~host;~spacer;~clock;~power" /etc/lightdm/lightdm-gtk-greeter.conf
+sed -i "/^#clock-format=/c\clock-format = %a, %b %-e %-l:%M %p" /etc/lightdm/lightdm-gtk-greeter.conf
+sed -i "/^#position=/c\position = 20%,center 50%,center" /etc/lightdm/lightdm-gtk-greeter.conf
+echo "hide-user-image = true" >> /etc/lightdm/lightdm-gtk-greeter.conf
+echo "cursor-theme-name = Vanilla-DMZ" >> /etc/lightdm/lightdm-gtk-greeter.conf
 usermod -a -G $NEWUSER lightdm
 chmod g+rx /home/$NEWUSER
 echo "export QT_STYLE_OVERRIDE=kvantum" >> /etc/profile
