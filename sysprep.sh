@@ -75,6 +75,10 @@ passwd $NEWUSER
 mkdir /home/$NEWUSER/Desktop
 chown $NEWUSER /home/$NEWUSER/Desktop
 chgrp $NEWUSER /home/$NEWUSER/Desktop
+cp /Comtrya.sh /home/$NEWUSER/Desktop/Comtrya.sh
+chown $NEWUSER /home/$NEWUSER/Desktop/Comtrya.sh
+chgrp $NEWUSER /home/$NEWUSER/Desktop/Comtrya.sh
+chmod +x /home/$NEWUSER/Desktop/Comtrya.sh
 ###################################
 ### Editing global config files ###
 ###################################
@@ -123,4 +127,9 @@ chmod g+rx /home/$NEWUSER
 echo "export QT_STYLE_OVERRIDE=kvantum" >> /etc/profile
 echo "load-sample-lazy x11-bell /usr/share/sounds/elementary/stereo/bell.wav" >> /etc/pulse/default.pa
 echo "load-module module-x11-bell sample=x11-bell" >> /etc/pulse/default.pa
+mkdir -p /etc/skel/.local/share/xed/styles
+cp /xed-arc-color-theme.xml /etc/skel/.local/share/xed/styles/xed-arc-color-theme.xml
+cp /bash.bashrc /etc/bash.bashrc
+cp /bash.bashrc /etc/skel/.bashrc
+cp /bash_aliases /mnt/etc/skel/.bash_aliases
 reboot
