@@ -12,7 +12,6 @@
 ########################################################
 CRYPTPART=$(lsblk -fs | grep crypto_LUKS | cut -f3 -d' ' | head -n 1)
 CRYPTPART="/dev/${CRYPTPART:2}"
-echo "LUKS encrypted partition is $CRYPTPART"
 ###########################################################
 ### Setting the timezone, clock, location, and language ###
 ###########################################################
@@ -107,7 +106,7 @@ sed -i "/^#greeter-session=example-gtk-gnome/c\greeter-session=lightdm-gtk-greet
 sed -i "/^#background=/c\background = /usr/share/backgrounds/gnome/LightBulb.jpg" /etc/lightdm/lightdm-gtk-greeter.conf
 sed -i "/^#theme-name=/c\theme-name = Arc-Dark" /etc/lightdm/lightdm-gtk-greeter.conf
 sed -i "/^#icon-theme-name=/c\icon-theme-name = Numix-Square" /etc/lightdm/lightdm-gtk-greeter.conf
-sed -i "/^#font-name=/c\font-name = Sans 13" /etc/lightdm/lightdm-gtk-greeter.conf
+sed -i "/^#font-name=/c\font-name = Dejavu Sans 13" /etc/lightdm/lightdm-gtk-greeter.conf
 sed -i "/^#indicators=/c\indicators = ~host;~spacer;~clock;~power" /etc/lightdm/lightdm-gtk-greeter.conf
 sed -i "/^#clock-format=/c\clock-format = %a, %b %-e %-l:%M %p" /etc/lightdm/lightdm-gtk-greeter.conf
 sed -i "/^#position=/c\position = 20%,center 50%,center" /etc/lightdm/lightdm-gtk-greeter.conf
