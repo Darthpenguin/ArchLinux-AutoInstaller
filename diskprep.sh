@@ -82,7 +82,7 @@ function installbasesys {
         echo
         echo "PROCESSOR TYPE UNKNOWN! NOT INSTALLING MICROCODE!"
     fi
-	pacstrap /mnt base linux linux-firmware mkinitcpio $MICROCODE lvm2 vi nano dhcpcd wpa_supplicant grub efibootmgr sudo pacman-contrib dmidecode
+	pacstrap /mnt base linux linux-firmware mkinitcpio $MICROCODE lvm2 vi nano dhcpcd wpa_supplicant grub efibootmgr sudo pacman-contrib dmidecode lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings
 	genfstab -U /mnt >> /mnt/etc/fstab
 }
 clear
