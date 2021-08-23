@@ -72,6 +72,9 @@ echo "Creating new user..."
 useradd -m -G wheel,rfkill -s /bin/bash $NEWUSER
 echo "Enter Password for $NEWUSER"
 passwd $NEWUSER
+mkdir /home/$NEWUSER/Desktop
+chown $NEWUSER /home/$NEWUSER/Desktop
+chgrp $NEWUSER /home/$NEWUSER/Desktop
 ###################################
 ### Editing global config files ###
 ###################################
