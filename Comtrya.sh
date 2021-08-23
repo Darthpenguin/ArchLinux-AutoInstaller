@@ -24,4 +24,4 @@ pacaur --noconfirm -S noto-fonts-emoji noto-fonts noto-fonts-cjk
 pacaur --noconfirm -S numix-circle-icon-theme-git numix-square-icon-theme numix-folders-git
 gsettings set org.cinnamon.desktop.interface icon-theme 'Numix-Circle'
 sudo pacman-key --populate archlinux
-pacaur --noconfirm -S xviewer xplayer pix cinnamon-sound-effects gnome-logs-git redshift-gtk-git
+pacaur --noconfirm -S xviewer xplayer pix cinnamon-sound-effects gnome-logs-git redshift-gtk-git kvantum-theme-arc
