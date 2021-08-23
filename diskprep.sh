@@ -116,5 +116,5 @@ createlvm
 installbasesys
 SCRIPTPATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 mount --bind $SCRIPTPATH /mnt/
-chmod +x sysprep.sh
+chmod +x $SCRIPTPATH/sysprep.sh
 arch-chroot /mnt /sysprep.sh
