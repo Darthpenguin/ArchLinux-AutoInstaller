@@ -94,12 +94,12 @@ setpartvars
 encryptdisk
 createlvm
 installbasesys
-chmod +x sysprep.sh
-cp sysprep.sh /mnt/root/sysprep.sh
-cp Comtrya.sh /mnt/root/Comtrya.sh
 mkdir -p /mnt/etc/skel/.local/share/xed/styles
 cp xed-arc-color-theme.xml /mnt/etc/skel/.local/share/xed/styles/xed-arc-color-theme.xml
 cp bash.bashrc /mnt/etc/bash.bashrc
 cp bash.bashrc /mnt/etc/skel/.bashrc
 cp bash_aliases /mnt/etc/skel/.bash_aliases
-arch-chroot /mnt /root/sysprep.sh
+SCRIPTPATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
+mount --bind $SCRIPTPATH /mnt/
+chmod +x sysprep.sh
+arch-chroot /mnt /sysprep.sh
