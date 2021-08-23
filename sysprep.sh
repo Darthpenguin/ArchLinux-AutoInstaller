@@ -73,9 +73,9 @@ echo "Creating new user..."
 useradd -m -G wheel,rfkill -s /bin/bash $NEWUSER
 echo "Enter Password for $NEWUSER"
 passwd $NEWUSER
-############################
-### Editing config files ###
-############################
+###################################
+### Editing global config files ###
+###################################
 echo EDITOR=nano >> /etc/environment
 echo VISUAL=/usr/bin/xed >> /etc/environment
 echo "Configuring nano..."
@@ -95,7 +95,7 @@ pacman --noconfirm -S man xdg-user-dirs meson bash-completion ttf-dejavu base-de
 pacman --noconfirm -S xorg xorg-drivers xorg-twm xorg-xclock xterm xcursor-vanilla-dmz xorg-xinit
 pacman --noconfirm -S cinnamon arc-gtk-theme x-apps xdg-user-dirs-gtk cheese simple-scan file-roller nemo-fileroller blueberry
 pacman --noconfirm -S gnome-calculator gnome-disk-utility gnome-screenshot gnome-sound-recorder gnome-terminal gnome-logs gnome-keyring yelp yelp-tools
-pacman --noconfirm -S cups networkmanager bluez-utils bluez lightdm-gtk-greeter-settings lightdm lightdm-gtk-greeter system-config-printer
+pacman --noconfirm -S cups networkmanager bluez-utils bluez lightdm-gtk-greeter-settings lightdm lightdm-gtk-greeter system-config-printer kvantum-qt5
 systemctl enable NetworkManager
 systemctl enable lightdm
 systemctl enable cups
@@ -106,4 +106,7 @@ sed -i "/^#greeter-session=example-gtk-gnome/c\greeter-session=lightdm-gtk-greet
 usermod -a -G $NEWUSER lightdm
 chmod g+rx /home/$NEWUSER
 mv -f /lightdm-gtk-greeter.conf /etc/lightdm/lightdm-gtk-greeter.conf
+echo "export QT_STYLE_OVERRIDE=kvantum" >> /etc/profile
+echo "load-sample-lazy x11-bell /usr/share/sounds/elementary/stereo/bell.wav" >> /etc/pulse/default.pa
+echo "load-module module-x11-bell sample=x11-bell" >> /etc/pulse/default.pa
 reboot
