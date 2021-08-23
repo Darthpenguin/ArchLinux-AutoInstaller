@@ -115,6 +115,6 @@ encryptdisk
 createlvm
 installbasesys
 SCRIPTPATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
-mount --bind $SCRIPTPATH /mnt/
+mount --bind $SCRIPTPATH /mnt/mnt
 chmod +x $SCRIPTPATH/sysprep.sh
-arch-chroot /mnt /sysprep.sh
+arch-chroot /mnt /mnt/sysprep.sh
