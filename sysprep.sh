@@ -103,15 +103,18 @@ systemctl enable avahi-daemon
 systemctl enable bluetooth
 echo "Configuring lightdm..."
 sed -i "/^#greeter-session=example-gtk-gnome/c\greeter-session=lightdm-gtk-greeter" /etc/lightdm/lightdm.conf
-sed -i "/^#background=/c\background = /usr/share/backgrounds/gnome/LightBulb.jpg" /etc/lightdm/lightdm-gtk-greeter.conf
-sed -i "/^#theme-name=/c\theme-name = Arc-Dark" /etc/lightdm/lightdm-gtk-greeter.conf
-sed -i "/^#icon-theme-name=/c\icon-theme-name = Numix-Square" /etc/lightdm/lightdm-gtk-greeter.conf
-sed -i "/^#font-name=/c\font-name = Dejavu Sans 13" /etc/lightdm/lightdm-gtk-greeter.conf
-sed -i "/^#indicators=/c\indicators = ~host;~spacer;~clock;~power" /etc/lightdm/lightdm-gtk-greeter.conf
-sed -i "/^#clock-format=/c\clock-format = %a, %b %-e %-l:%M %p" /etc/lightdm/lightdm-gtk-greeter.conf
-sed -i "/^#position=/c\position = 20%,center 50%,center" /etc/lightdm/lightdm-gtk-greeter.conf
-echo "hide-user-image = true" >> /etc/lightdm/lightdm-gtk-greeter.conf
-echo "cursor-theme-name = Vanilla-DMZ" >> /etc/lightdm/lightdm-gtk-greeter.conf
+echo [greeter] > /etc/lightdm/lightdm-gtk-greeter.conf
+cat <<EOT >> /etc/lightdm/lightdm-gtk-greeter.conf
+background = /usr/share/backgrounds/gnome/LightBulb.jpg
+theme-name = Arc-Dark
+icon-theme-name = Numix-Square
+font-name = DejaVu Sans 12
+indicators = ~host;~spacer;~clock;~power
+clock-format = %a, %b %-e %-l:%M %p /etc/lightdm/lightdm-gtk-greeter.conf
+position = 20%,center 50%,center
+hide-user-image = true
+cursor-theme-name = Vanilla-DMZ
+EOT
 usermod -a -G $NEWUSER lightdm
 chmod g+rx /home/$NEWUSER
 echo "export QT_STYLE_OVERRIDE=kvantum" >> /etc/profile
