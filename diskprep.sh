@@ -86,7 +86,27 @@ function installbasesys {
 	genfstab -U /mnt >> /mnt/etc/fstab
 }
 clear
-echo "Welcome to the Arch Linux AutoInstaller for laptops."
+echo
+echo -e '\033[1mWelcome to the Arch Linux AutoInstaller for laptops\033[0m'
+echo
+echo "This installer will create a small bios and gpt partition on the disk you specify"
+echo "This installer will prepare the rest of the disk for encryption"
+echo -e 'A \033[1m16 GiB\033[0m logical volume will be configured for SWAP.'
+echo "Edit the script to change the size of the swap partition before executing the script."
+echo -e 'The logical volume for the base Arch system will be set for \033[1m32 GiB\033[0m unless you have edited this script.'
+echo -e '\033[1mBe sure you are connected to the internet before running this script.\033[0m'
+echo "After partitioning, encrypting, lvm creation, formatting and volume mounting the base system and key packages will be installed."
+echo "We will automatically chroot into the new Arch system and complete basic system configuration and install additional packages."
+echo -e 'This script assumes your timezone is \033[1mEST\033[0m and sets your location as \033[1mToronto Canada.\033[0m'
+echo -e 'The default language will be set to \033[1mEnglish US.\033[0m'
+echo 'The pacman mirrorlist will be auto generate based on the the fastest mirrors in US, Canada, and UK'
+echo 'The defautl desktop environment will be cinnamon.'
+echo
+read -p "Do you want to continue? " -n 1 -r
+if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+    [[ "$0" = "$BASH_SOURCE" ]] && exit 1 || return 1 
+fi
+echo
 listdisks
 gettarget
 partitiondisk
