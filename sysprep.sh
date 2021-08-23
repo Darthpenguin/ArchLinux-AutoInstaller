@@ -8,7 +8,7 @@
 ###                                                  ###
 ### There should only be one encrypted partition.    ###
 ### If you have more than one encrypted partition... ###
-### ...this whole thing might just go tits up (0.o)  ###
+### ...this whole thing might just go tits up        ###
 ########################################################
 CRYPTPART=$(lsblk -fs | grep crypto_LUKS | cut -f3 -d' ' | head -n 1)
 CRYPTPART="/dev/${CRYPTPART:2}"
