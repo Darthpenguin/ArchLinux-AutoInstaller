@@ -99,7 +99,7 @@ echo "We will automatically chroot into the new Arch system and complete basic s
 echo -e 'This script assumes your timezone is \033[1mEST\033[0m and sets your location as \033[1mToronto Canada.\033[0m'
 echo -e 'The default language will be set to \033[1mEnglish US.\033[0m'
 echo 'The pacman mirrorlist will be auto generate based on the the fastest mirrors in US, Canada, and UK'
-echo 'The defautl desktop environment will be cinnamon.'
+echo 'The default desktop environment will be cinnamon.'
 echo
 read -p "Do you want to continue? " -n 1 -r
 if [[ ! $REPLY =~ ^[Yy]$ ]]; then
