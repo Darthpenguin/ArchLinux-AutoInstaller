@@ -75,10 +75,10 @@ passwd $NEWUSER
 mkdir /home/$NEWUSER/Desktop
 chown $NEWUSER /home/$NEWUSER/Desktop
 chgrp $NEWUSER /home/$NEWUSER/Desktop
-#cp /mnt/Comtrya.sh /home/$NEWUSER/Desktop/Comtrya.sh
-#chown $NEWUSER /home/$NEWUSER/Desktop/Comtrya.sh
-#chgrp $NEWUSER /home/$NEWUSER/Desktop/Comtrya.sh
-#chmod +x /home/$NEWUSER/Desktop/Comtrya.sh
+cp /mnt/Comtrya.sh /home/$NEWUSER/Desktop/Comtrya.sh
+chown $NEWUSER /home/$NEWUSER/Desktop/Comtrya.sh
+chgrp $NEWUSER /home/$NEWUSER/Desktop/Comtrya.sh
+chmod +x /home/$NEWUSER/Desktop/Comtrya.sh
 ###################################
 ### Editing global config files ###
 ###################################
@@ -132,6 +132,4 @@ cp /mnt/xed-arc-color-theme.xml /etc/skel/.local/share/xed/styles/xed-arc-color-
 cp /mnt/bash.bashrc /etc/bash.bashrc
 cp /mnt/bash.bashrc /etc/skel/.bashrc
 cp /mnt/bash_aliases /mnt/etc/skel/.bash_aliases
-chmod +x "/mnt/Comtrya.sh"
-/bin/su -c "/mnt/Comtrya.sh" - $NEWUSER
 reboot
