@@ -85,7 +85,10 @@ chmod +x /home/$NEWUSER/Desktop/Comtrya.sh
 echo EDITOR=nano >> /etc/environment
 echo VISUAL=/usr/bin/xed >> /etc/environment
 echo "Configuring nano..."
-sed -i "/# include \"\/usr\/share\/nano\/*.nanorc\"/ s/# *//" /etc/nanorc
+if grep -q "include \"/usr/share/nano/\*.nanorc\"" /etc/nanorc; then
+  sed -i "/# include \"\/usr\/share\/nano\/*.nanorc\"/ s/# *//" /etc/nanorc; else
+  echo include \"/usr/share/nano/*.nanorc\" >> /etc/nanorc
+fi
 echo "Configuring sudo..."
 sed -i "/# %wheel ALL=(ALL) ALL/ s/# *//" /etc/sudoers
 sed -i '/^# Defaults!REBOOT !log_output/a Defaults env_reset,pwfeedback' /etc/sudoers
